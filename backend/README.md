@@ -1,4 +1,4 @@
-# E-commerce Backend API
+# Store-X Backend API
 
 A Node.js/Express backend API for an e-commerce platform with authentication, product management, order processing, and payment handling.
 
