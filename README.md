@@ -167,5 +167,3 @@ The API implements comprehensive error handling for:
 - Uses `nodemon` for development with hot-reloading
 - TypeScript compilation on-the-fly using `ts-node`
 - ESLint and Prettier for code formatting
-- Jest for testing
-
