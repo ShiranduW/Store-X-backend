@@ -8,12 +8,29 @@ import {
 } from "../application/product";
 import { isAuthenticated } from "./middleware/authentication-middleware";
 import { isAdmin } from "./middleware/authorization-middleware";
+import { validateQuery } from "./middleware/validation-middleware";
+import { GetProductsQueryDTO } from "../domain/dto/product";
+import { Request, Response, NextFunction } from "express";
 
 export const productRouter = express.Router();
 
+// Add logging middleware
+const logRequest = (req: Request, res: Response, next: NextFunction) => {
+  next();
+};
+
+// Add error handling middleware
+const asyncHandler = (fn: any) => (req: Request, res: Response, next: NextFunction) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
+
 productRouter
   .route("/")
-  .get(getProducts)
+  .get(
+    logRequest,
+    validateQuery(GetProductsQueryDTO),
+    asyncHandler(getProducts)
+  )
   .post(isAuthenticated, isAdmin, createProduct); //Remove isAuthenticated and isAdmin for using with Postman
 productRouter
   .route("/:id")

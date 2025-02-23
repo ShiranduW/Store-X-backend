@@ -13,16 +13,21 @@ import { connectDB } from "./infrastructure/db";
 const app = express();
 app.use(express.json()); // For parsing JSON requests
 app.use(clerkMiddleware());
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ 
+  origin: "http://localhost:5173",
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true
+}));
 
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/payments", paymentsRouter);
 
-
 app.use(globalErrorHandlingMiddleware);
 
-connectDB();
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+connectDB().then(() => {
+  const PORT = process.env.PORT || 8000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+});
